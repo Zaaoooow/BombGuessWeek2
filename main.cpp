@@ -1,4 +1,6 @@
 #include <raylib.h>
+#include <chrono>
+#include <thread>
 
 int main(){
     InitWindow(512, 416, "Bomb Guess");
@@ -19,6 +21,14 @@ int main(){
     Texture2D screen2 = LoadTexture("assets/screen2.png");
     Texture2D normalmode1 = LoadTexture("assets/normal1.png");
     Texture2D normalmode1hover = LoadTexture("assets/normal1hover.png");
+    Texture2D customMode1 = LoadTexture("assets/custom.png");
+    Texture2D customMode1Hover = LoadTexture("assets/customhover.png");
+    Texture2D backbutton = LoadTexture("assets/backbuttonhover.png");
+    Texture2D backbuttonhover = LoadTexture("assets/backbutton.png");
+    Texture2D normalpage = LoadTexture("assets/background3.png");
+    Texture2D bomb = LoadTexture("assets/bomb.png");
+    Texture2D ezmodebuttons = LoadTexture("assets/easymodebuttons.png");
+    Texture2D displaybox = LoadTexture("assets/displaybox.png");
 
     SetTextureFilter(bground1, TEXTURE_FILTER_POINT);
     SetTextureFilter(pButton1, TEXTURE_FILTER_POINT);
@@ -33,6 +43,14 @@ int main(){
     SetTextureFilter(screen2, TEXTURE_FILTER_POINT);
     SetTextureFilter(normalmode1, TEXTURE_FILTER_POINT);
     SetTextureFilter(normalmode1hover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(customMode1, TEXTURE_FILTER_POINT);
+    SetTextureFilter(customMode1Hover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(backbutton, TEXTURE_FILTER_POINT);
+    SetTextureFilter(backbuttonhover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(normalpage, TEXTURE_FILTER_POINT);
+    SetTextureFilter(bomb, TEXTURE_FILTER_POINT);
+    SetTextureFilter(ezmodebuttons, TEXTURE_FILTER_POINT);
+    SetTextureFilter(displaybox, TEXTURE_FILTER_POINT);
 
     //guide screen bool
     bool guideScreen = false;
@@ -102,11 +120,10 @@ int main(){
                 }
             }
         }
-
-
-        // gamemode page
-        if(screen == 1){
+        else if(screen == 1){
             bool normalmodehover = CheckCollisionPointRec(cursor, {156, 144, 196, 40});            
+            bool customhover = CheckCollisionPointRec(cursor, {156, 212, 196, 40});
+            bool backhover = CheckCollisionPointRec(cursor, {156, 280, 196, 40});
 
             //start of screen 1 code
             ClearBackground(RAYWHITE);
@@ -115,10 +132,37 @@ int main(){
 
             if(normalmodehover){
                 DrawTexture(normalmode1hover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    screen = 2;
+                }
             }
             else{
                 DrawTexture(normalmode1, 0, 0, WHITE);
             }
+            if(customhover){
+                DrawTexture(customMode1Hover, 0, 0, WHITE);
+            }
+            else{
+                DrawTexture(customMode1, 0, 0, WHITE);
+            }
+            if(backhover){
+                DrawTexture(backbuttonhover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    screen = 0;
+                }
+            }
+            else{
+                DrawTexture(backbutton, 0, 0, WHITE);
+            }
+        }
+        else if(screen == 2){
+
+            ClearBackground(RAYWHITE);
+
+            DrawTexture(normalpage, 0, 0, WHITE);
+
+            DrawTexture(bomb, 0, 0, WHITE);
+            DrawTexture(displaybox, 0, 0, WHITE);
         }
 
         EndDrawing();
