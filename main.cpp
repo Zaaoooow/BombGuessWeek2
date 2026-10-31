@@ -42,6 +42,8 @@ int main(){
     Texture2D winpa = LoadTexture("assets/winpa.png");
     Texture2D winpahover = LoadTexture("assets/winpahover.png");
     Texture2D correct = LoadTexture("assets/correct.png");
+    Texture2D screen3 = LoadTexture("assets/screen3.png");
+    Texture2D customscreen = LoadTexture("assets/customscreen.png");
     
 
     //normal mode choices
@@ -66,6 +68,13 @@ int main(){
     SetTextureFilter(c3, TEXTURE_FILTER_POINT);
     SetTextureFilter(c6, TEXTURE_FILTER_POINT);
     SetTextureFilter(c9, TEXTURE_FILTER_POINT);
+
+    //screen 3
+    Texture2D customback = LoadTexture("assets/customback.png");
+    Texture2D custombackhover = LoadTexture("assets/custombackhover.png");
+    Texture2D customsettingsbox = LoadTexture("assets/customsettings.png");
+    Texture2D stminus = LoadTexture("assets/stminus.png");
+    Texture2D stplus = LoadTexture("assets/stplus.png");
 
     //make images sharp.
     SetTextureFilter(bground1, TEXTURE_FILTER_POINT);
@@ -101,6 +110,13 @@ int main(){
     SetTextureFilter(winpa, TEXTURE_FILTER_POINT);
     SetTextureFilter(winpahover, TEXTURE_FILTER_POINT);
     SetTextureFilter(correct, TEXTURE_FILTER_POINT);
+    SetTextureFilter(screen3, TEXTURE_FILTER_POINT);
+    SetTextureFilter(customscreen, TEXTURE_FILTER_POINT);
+    SetTextureFilter(customback, TEXTURE_FILTER_POINT);
+    SetTextureFilter(custombackhover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(customsettingsbox, TEXTURE_FILTER_POINT);
+    SetTextureFilter(stminus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(stplus, TEXTURE_FILTER_POINT);
 
     //guide screen bool
     bool guideScreen = false;
@@ -123,6 +139,10 @@ int main(){
     bool gamestarted = false;
     float bombstartTime;
     int bombcountdown ;
+    //screen 3
+    int starttimespeed = 1;
+    int bombtimespeed = 1;
+    int winscore = 1;
     while(!WindowShouldClose()){
         srand(time(NULL));
 
@@ -224,6 +244,9 @@ int main(){
             }
             if(customhover){
                 DrawTexture(customMode1Hover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    screen = 3;
+                }
             }
             else{
                 DrawTexture(customMode1, 0, 0, WHITE);
@@ -461,7 +484,59 @@ int main(){
 
             }
         }
+        else if(screen == 3){
+            //start of screen 3 code
+            bool customback1hover = CheckCollisionPointRec(cursor, {424, 24, 60, 60});
+            bool stminushover = CheckCollisionPointRec(cursor, {268, 128, 28, 8});
+            bool stplushover = CheckCollisionPointRec(cursor, {312, 116, 28, 28});
 
+            ClearBackground(RAYWHITE);
+            DrawTexture(customscreen, 0, 0, WHITE);
+            DrawTexture(customsettingsbox, 0, 0, WHITE);
+            //minus and plus
+            if(stminushover){
+                DrawTexture(stminus, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    starttimespeed--;
+                }
+            }
+            else{
+                DrawTexture(stminus, 0, 0, WHITE);
+            }
+            if(stplushover){
+                DrawTexture(stplus, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    starttimespeed++;
+                }
+            }
+            else{
+                DrawTexture(stplus, 0, 0, WHITE);
+            }
+            if(starttimespeed <= 1){
+                starttimespeed = 1;
+            }
+            else if(starttimespeed >= 7){
+                starttimespeed = 7;
+            }
+
+            DrawText(TextFormat("Starting Timer: %i", starttimespeed), 34, 125, 15, WHITE);
+            DrawText(TextFormat("Bomb Countdown: %i", bombtimespeed), 34, 201, 15, WHITE);
+            DrawText(TextFormat("Winning Score: %i", winscore), 34, 280, 15, WHITE);
+
+            // back button
+            if(customback1hover){
+                DrawTexture(custombackhover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    screen = 1;
+                }
+            }
+            else{
+                DrawTexture(customback, 0, 0, WHITE);
+            }
+
+
+
+        }
         EndDrawing();
     }
     CloseWindow();
