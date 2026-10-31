@@ -89,12 +89,37 @@ int main(){
 
     //guide screen bool
     bool guideScreen = false;
-    srand(time(NULL));
-    
-    while(!WindowShouldClose()){
-        
 
-        BeginDrawing();
+    //normal mode random logic
+    int normaldisplays = 0;
+    int correctans;
+    int normalrand1 = GetRandomValue(1, 9);
+    int normalrand2 = GetRandomValue(1, 9);
+    int normalrand3 = GetRandomValue(1, 9);
+    int score = 0;
+    int answer;
+    int x;
+    //coutdown
+    bool countdownstart = false;
+    float startTime = 0;
+    int countdown;
+    //bomb coutdown
+    bool gamestarted = false;
+    float bombstartTime;
+    int bombcountdown = 0;
+    while(!WindowShouldClose()){
+        srand(time(NULL));
+        //countdown timer
+        if(countdownstart && !gamestarted){
+            countdown = 4 - (GetTime() - startTime);
+            if(countdown == 0){
+                gamestarted = true;
+                bombstartTime = GetTime();
+            }
+        }
+        if(gamestarted){
+            bombcountdown = 3 - (GetTime() - bombstartTime);
+        }
         
         Vector2 cursor = GetMousePosition();
 
@@ -171,7 +196,10 @@ int main(){
             if(normalmodehover){
                 DrawTexture(normalmode1hover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+
                     screen = 2;
+                    countdownstart = true;
+                    startTime = GetTime();
                 }
             }
             else{
@@ -199,16 +227,6 @@ int main(){
             bool choice2hover = CheckCollisionPointRec(cursor, {240, 284, 32, 32});
             bool choice3hover = CheckCollisionPointRec(cursor, {288, 284, 32, 32});
 
-
-            int normaldisplays = 0;
-            int correctans;
-            int normalrand1 = rand() % 9 + 1;
-            int normalrand2 = rand() % 9 + 1;
-            int normalrand3 = rand() % 9 + 1;
-            int score = 0;
-            int answer;
-            int x;
-
             ClearBackground(RAYWHITE);
 
             DrawTexture(normalpage, 0, 0, WHITE);
@@ -216,55 +234,87 @@ int main(){
             DrawTexture(bomb, 0, 0, WHITE);
             DrawTexture(displaybox, 0, 0, WHITE);
 
+            //countdown
+            if(countdownstart && countdown > 0){
+                if(countdown == 3){
+                    DrawText("3", 243, 68, 60, GREEN);
+                }
+                else if(countdown == 2){
+                    DrawText("2", 243, 68, 60, GREEN);
+                }
+                else if(countdown == 1){
+                    DrawText("1", 251, 68, 60, GREEN);
+                }
+            }
+            else if(countdownstart && countdown <= 0){
+                countdownstart = false;
+            }
+
             // display random logic
+            if(countdown == 0){
 
-            if(normaldisplays == 0){
-                x = normalrand1;
-            }
-            else if(normaldisplays == 1){
-                x = normalrand2;
-            }
-            else if(normaldisplays == 2){
-                x = normalrand3;
-            }
+                //bomb timer
+                if(bombcountdown == 3){
+                    
+                }
 
-            if(x == 1){
-                DrawTexture(c1, 0, 0, WHITE);
-                correctans = 0;
-            }
-            else if(x == 2){
-                DrawTexture(c2, 0, 0, WHITE);
-                correctans = 0;
-            }
-            else if(x == 3){
-                DrawTexture(c3, 0, 0, WHITE);
-                correctans = 0;
-            }
-            else if(x == 4){
-                DrawTexture(c4, 0, 0, WHITE);
-                correctans = 1;
-            }
-            else if(x == 5){
-                DrawTexture(c5, 0, 0, WHITE);
-                correctans = 1;
-            }
-            else if(x == 6){
-                DrawTexture(c6, 0, 0, WHITE);
-                correctans = 1;
-            }
-            else if(x == 7){
-                DrawTexture(c7, 0, 0, WHITE);
-                correctans = 2;
-            }
-            else if(x == 8){
-                DrawTexture(c8, 0, 0, WHITE);
-                correctans = 2;
-            }
-            else if(x == 9){
-                DrawTexture(c9, 0, 0, WHITE);
-                correctans = 2;
-            }
+                if(normaldisplays == 0){
+                    x = normalrand1;
+                }
+                else if(normaldisplays == 1){
+                    x = normalrand2;
+                }
+                else if(normaldisplays == 2){
+                    x = normalrand3;
+                }
 
+                if(score == 0){
+                    normaldisplays = 0;
+                }
+                else if(score == 1){
+                    normaldisplays = 1;
+                }
+                else if(score == 2){
+                    normaldisplays = 2;
+                }
+
+                if(x == 1){
+                    DrawTexture(c1, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 2){
+                    DrawTexture(c2, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 3){
+                    DrawTexture(c3, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 4){
+                    DrawTexture(c4, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 5){
+                    DrawTexture(c5, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 6){
+                    DrawTexture(c6, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 7){
+                    DrawTexture(c7, 0, 0, WHITE);
+                    correctans = 2;
+                }
+                else if(x == 8){
+                    DrawTexture(c8, 0, 0, WHITE);
+                    correctans = 2;
+                }
+                else if(x == 9){
+                    DrawTexture(c9, 0, 0, WHITE);
+                    correctans = 2;
+                }
+            }
             //choices logic
 
             if(choice1hover){
@@ -299,7 +349,20 @@ int main(){
 
             if(correctans == answer){
                 DrawText("RIGHT", 140, 140, 50, GREEN);
+                score++;
             }
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && correctans != answer){
+                DrawText("EXPLODE!", 140, 140, 50, GREEN);
+                screen = 1;
+                score = 0;
+            }
+            if(score == 2){
+                normalrand1 = GetRandomValue(1, 9);
+                normalrand2 = GetRandomValue(1, 9);
+                normalrand3 = GetRandomValue(1, 9);
+                score = 0;
+            }
+
 
             answer = 4;
         }
