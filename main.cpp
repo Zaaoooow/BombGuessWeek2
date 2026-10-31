@@ -96,17 +96,18 @@ int main(){
     int normalrand1 = GetRandomValue(1, 9);
     int normalrand2 = GetRandomValue(1, 9);
     int normalrand3 = GetRandomValue(1, 9);
+    bool gameover = false;
     int score = 0;
     int answer;
     int x;
     //coutdown
     bool countdownstart = false;
-    float startTime = 0;
+    float startTime;
     int countdown;
     //bomb coutdown
     bool gamestarted = false;
     float bombstartTime;
-    int bombcountdown = 0;
+    int bombcountdown ;
     while(!WindowShouldClose()){
         srand(time(NULL));
         //countdown timer
@@ -118,7 +119,7 @@ int main(){
             }
         }
         if(gamestarted){
-            bombcountdown = 3 - (GetTime() - bombstartTime);
+            bombcountdown = 4 - (GetTime() - bombstartTime);
         }
         
         Vector2 cursor = GetMousePosition();
@@ -196,7 +197,6 @@ int main(){
             if(normalmodehover){
                 DrawTexture(normalmode1hover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-
                     screen = 2;
                     countdownstart = true;
                     startTime = GetTime();
@@ -252,10 +252,22 @@ int main(){
 
             // display random logic
             if(countdown == 0){
-
                 //bomb timer
                 if(bombcountdown == 3){
-                    
+                    DrawText("3", 247, 180, 40, BLACK);
+                }
+                else if(bombcountdown == 2){
+                    DrawText("2", 247, 180, 40, BLACK);
+                }
+                else if(bombcountdown == 1){
+                    DrawText("1", 252, 180, 40, BLACK);
+                }
+                else if(bombcountdown == 0){
+                    startTime = GetTime();
+                    bombstartTime = 0;
+                    countdownstart = true;
+                    gamestarted = false;
+                    score++;
                 }
 
                 if(normaldisplays == 0){
@@ -316,11 +328,12 @@ int main(){
                 }
             }
             //choices logic
-
             if(choice1hover){
                 DrawTexture(ezmodebutton1hover, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    answer = 0;
+                if(gamestarted){
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        answer = 0;
+                    }
                 }
             }
             else{
@@ -328,8 +341,10 @@ int main(){
             }
             if(choice2hover){
                 DrawTexture(ezmodebutton2hover, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    answer = 1;
+                if(gamestarted){
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        answer = 1;
+                    }
                 }
             }
             else{
@@ -337,8 +352,10 @@ int main(){
             }
             if(choice3hover){
                 DrawTexture(ezmodebutton3hover, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    answer = 2;
+                if(gamestarted){
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        answer = 2;
+                    }
                 }
             }
             else{
@@ -346,12 +363,7 @@ int main(){
             }
 
             // check answer
-
-            if(correctans == answer){
-                DrawText("RIGHT", 140, 140, 50, GREEN);
-                score++;
-            }
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && correctans != answer){
+            if((choice1hover || choice2hover || choice3hover) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && correctans != answer){
                 DrawText("EXPLODE!", 140, 140, 50, GREEN);
                 screen = 1;
                 score = 0;
@@ -362,9 +374,6 @@ int main(){
                 normalrand3 = GetRandomValue(1, 9);
                 score = 0;
             }
-
-
-            answer = 4;
         }
 
         EndDrawing();
