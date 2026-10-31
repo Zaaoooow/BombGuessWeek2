@@ -36,7 +36,14 @@ int main(){
     Texture2D ezmodebutton3hover = LoadTexture("assets/choice3hover.png");
     Texture2D displaybox = LoadTexture("assets/displaybox.png");
     Texture2D boom = LoadTexture("assets/boom.png");
+    Texture2D boompa = LoadTexture("assets/boompa.png");
+    Texture2D boompahover = LoadTexture("assets/boompahover.png");
+    Texture2D winscreen = LoadTexture("assets/winscreen.png");
+    Texture2D winpa = LoadTexture("assets/winpa.png");
+    Texture2D winpahover = LoadTexture("assets/winpahover.png");
+    Texture2D correct = LoadTexture("assets/correct.png");
     
+
     //normal mode choices
     //yellow
     Texture2D c1 = LoadTexture("assets/c1.png");
@@ -88,6 +95,12 @@ int main(){
     SetTextureFilter(ezmodebutton3hover, TEXTURE_FILTER_POINT);
     SetTextureFilter(displaybox, TEXTURE_FILTER_POINT);
     SetTextureFilter(boom, TEXTURE_FILTER_POINT);
+    SetTextureFilter(boompa, TEXTURE_FILTER_POINT);
+    SetTextureFilter(boompahover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(winscreen, TEXTURE_FILTER_POINT);
+    SetTextureFilter(winpa, TEXTURE_FILTER_POINT);
+    SetTextureFilter(winpahover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(correct, TEXTURE_FILTER_POINT);
 
     //guide screen bool
     bool guideScreen = false;
@@ -230,6 +243,9 @@ int main(){
             bool choice1hover = CheckCollisionPointRec(cursor, {191, 284, 32, 32});
             bool choice2hover = CheckCollisionPointRec(cursor, {240, 284, 32, 32});
             bool choice3hover = CheckCollisionPointRec(cursor, {288, 284, 32, 32});
+            bool boompa1hover = CheckCollisionPointRec(cursor, {204, 236, 144, 16});
+            bool winplay = CheckCollisionPointRec(cursor, {292, 120, 56, 24});
+            bool winagain = CheckCollisionPointRec(cursor, {332, 148, 80, 24});
 
             ClearBackground(RAYWHITE);
 
@@ -266,14 +282,23 @@ int main(){
                 else if(bombcountdown == 1){
                     DrawText("1", 252, 180, 40, BLACK);
                 }
-                else if(bombcountdown == 0 || gameover){
+                else if(bombcountdown == 0){
+                    if(answer != correctans){
+                        gameover = true;
+                    }
+                    else{
+                        score++;
+                    }
+                    if(score >= 3){
+                        gamestarted = false;
+                        countdownstart = false;
+                    }
+                    else{
                     startTime = GetTime();
-                    bombstartTime = 0;
                     countdownstart = true;
                     gamestarted = false;
-                    gameover = false;
                     answer = -1;
-                    score++;
+                    }
                 }
                 
                 if(normaldisplays == 0){
@@ -295,7 +320,6 @@ int main(){
                 else if(score == 2){
                     normaldisplays = 2;
                 }
-
                 if(x == 1){
                     DrawTexture(c1, 0, 0, WHITE);
                     correctans = 0;
@@ -372,16 +396,69 @@ int main(){
             // check answer
             if(gamestarted && answer != -1){
                 if(correctans == answer){
-                    DrawText("CORRECT", 100, 100, 60, GREEN);
+                    DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
                     gameover = true;
                 }
             }
+            if(score >= 3 && !gameover){
+                DrawTexture(winscreen, 0, 0, WHITE);
+                gamestarted = false;
+                countdownstart = false;
+                if(winplay || winagain){
+                    DrawTexture(winpahover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        screen = 1;
+
+                        gameover = false;
+                        gamestarted = false;
+                        countdownstart = false;
+                        answer = -1;
+                        score = 0;
+                        normaldisplays = 0;
+                        countdown = 4;
+                        bombcountdown = 4;
+
+                        normalrand1 = GetRandomValue(1, 9);
+                        normalrand2 = GetRandomValue(1, 9);
+                        normalrand3 = GetRandomValue(1, 9);
+                    }
+                }
+                else{
+                    DrawTexture(winpa, 0, 0, WHITE);
+                }
+
+            }
             if(gameover){
                 DrawTexture(boom, 0, 0, WHITE);
                 gamestarted = false;
                 countdownstart = false;
+                if(boompa1hover){
+                    DrawTexture(boompahover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        screen = 1;
+                        
+                        gameover = false;
+                        gamestarted = false;
+                        countdownstart = false;
+                        answer = -1;
+                        score = 0;
+                        normaldisplays = 0;
+
+                        countdown = 4;
+                        bombcountdown = 4;
+
+                        normalrand1 = GetRandomValue(1, 9);
+                        normalrand2 = GetRandomValue(1, 9);
+                        normalrand3 = GetRandomValue(1, 9);
+
+                    }
+                }
+                else{
+                    DrawTexture(boompa, 0, 0, WHITE);
+                }
+
             }
         }
 
