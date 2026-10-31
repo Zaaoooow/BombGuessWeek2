@@ -35,6 +35,7 @@ int main(){
     Texture2D ezmodebutton3 = LoadTexture("assets/choice3.png");
     Texture2D ezmodebutton3hover = LoadTexture("assets/choice3hover.png");
     Texture2D displaybox = LoadTexture("assets/displaybox.png");
+    Texture2D boom = LoadTexture("assets/boom.png");
     
     //normal mode choices
     //yellow
@@ -86,6 +87,7 @@ int main(){
     SetTextureFilter(ezmodebutton3, TEXTURE_FILTER_POINT);
     SetTextureFilter(ezmodebutton3hover, TEXTURE_FILTER_POINT);
     SetTextureFilter(displaybox, TEXTURE_FILTER_POINT);
+    SetTextureFilter(boom, TEXTURE_FILTER_POINT);
 
     //guide screen bool
     bool guideScreen = false;
@@ -98,7 +100,7 @@ int main(){
     int normalrand3 = GetRandomValue(1, 9);
     bool gameover = false;
     int score = 0;
-    int answer;
+    int answer = -1;
     int x;
     //coutdown
     bool countdownstart = false;
@@ -110,10 +112,12 @@ int main(){
     int bombcountdown ;
     while(!WindowShouldClose()){
         srand(time(NULL));
+
         //countdown timer
         if(countdownstart && !gamestarted){
             countdown = 4 - (GetTime() - startTime);
             if(countdown == 0){
+                countdown = 0;
                 gamestarted = true;
                 bombstartTime = GetTime();
             }
@@ -262,14 +266,16 @@ int main(){
                 else if(bombcountdown == 1){
                     DrawText("1", 252, 180, 40, BLACK);
                 }
-                else if(bombcountdown == 0){
+                else if(bombcountdown == 0 || gameover){
                     startTime = GetTime();
                     bombstartTime = 0;
                     countdownstart = true;
                     gamestarted = false;
+                    gameover = false;
+                    answer = -1;
                     score++;
                 }
-
+                
                 if(normaldisplays == 0){
                     x = normalrand1;
                 }
@@ -362,17 +368,20 @@ int main(){
                 DrawTexture(ezmodebutton3, 0, 0, WHITE);
             }
 
+
             // check answer
-            if((choice1hover || choice2hover || choice3hover) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && correctans != answer){
-                DrawText("EXPLODE!", 140, 140, 50, GREEN);
-                screen = 1;
-                score = 0;
+            if(gamestarted && answer != -1){
+                if(correctans == answer){
+                    DrawText("CORRECT", 100, 100, 60, GREEN);
+                }
+                else{
+                    gameover = true;
+                }
             }
-            if(score == 2){
-                normalrand1 = GetRandomValue(1, 9);
-                normalrand2 = GetRandomValue(1, 9);
-                normalrand3 = GetRandomValue(1, 9);
-                score = 0;
+            if(gameover){
+                DrawTexture(boom, 0, 0, WHITE);
+                gamestarted = false;
+                countdownstart = false;
             }
         }
 
