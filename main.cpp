@@ -75,6 +75,18 @@ int main(){
     Texture2D customsettingsbox = LoadTexture("assets/customsettings.png");
     Texture2D stminus = LoadTexture("assets/stminus.png");
     Texture2D stplus = LoadTexture("assets/stplus.png");
+    Texture2D btminus = LoadTexture("assets/btminus.png");
+    Texture2D btplus = LoadTexture("assets/btplus.png");
+    Texture2D wsminus = LoadTexture("assets/wsmins.png");
+    Texture2D wsplus = LoadTexture("assets/wsplus.png");
+    Texture2D stminusho = LoadTexture("assets/stminusho.png");
+    Texture2D stplusho = LoadTexture("assets/stplusho.png");
+    Texture2D btminusho = LoadTexture("assets/btminusho.png");
+    Texture2D btplusho = LoadTexture("assets/btplusho.png");
+    Texture2D wsminusho = LoadTexture("assets/wsminusho.png");
+    Texture2D wsplusho = LoadTexture("assets/wsplusho.png");
+    Texture2D cstart = LoadTexture("assets/customstart.png");
+    Texture2D cstarthover = LoadTexture("assets/customstarthover.png");
 
     //make images sharp.
     SetTextureFilter(bground1, TEXTURE_FILTER_POINT);
@@ -117,6 +129,19 @@ int main(){
     SetTextureFilter(customsettingsbox, TEXTURE_FILTER_POINT);
     SetTextureFilter(stminus, TEXTURE_FILTER_POINT);
     SetTextureFilter(stplus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(btminus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(btplus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(wsminus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(wsplus, TEXTURE_FILTER_POINT);
+    SetTextureFilter(stminusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(stplusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(btminusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(btplusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(wsminusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(wsplusho, TEXTURE_FILTER_POINT);
+    SetTextureFilter(cstart, TEXTURE_FILTER_POINT);
+    SetTextureFilter(cstarthover, TEXTURE_FILTER_POINT);
+
 
     //guide screen bool
     bool guideScreen = false;
@@ -269,6 +294,7 @@ int main(){
             bool boompa1hover = CheckCollisionPointRec(cursor, {204, 236, 144, 16});
             bool winplay = CheckCollisionPointRec(cursor, {292, 120, 56, 24});
             bool winagain = CheckCollisionPointRec(cursor, {332, 148, 80, 24});
+
 
             ClearBackground(RAYWHITE);
 
@@ -487,15 +513,32 @@ int main(){
         else if(screen == 3){
             //start of screen 3 code
             bool customback1hover = CheckCollisionPointRec(cursor, {424, 24, 60, 60});
-            bool stminushover = CheckCollisionPointRec(cursor, {268, 128, 28, 8});
-            bool stplushover = CheckCollisionPointRec(cursor, {312, 116, 28, 28});
+            bool stminushover = CheckCollisionPointRec(cursor, {268, 128, 32, 8});
+            bool stplushover = CheckCollisionPointRec(cursor, {312, 116, 32, 32});
+            bool btminushover = CheckCollisionPointRec(cursor, {268, 204, 32, 8});
+            bool btplushover = CheckCollisionPointRec(cursor, {312, 192, 32, 32});
+            bool wsminushover = CheckCollisionPointRec(cursor, {268, 284, 32, 8});
+            bool wsplushover = CheckCollisionPointRec(cursor, {312, 272, 32, 32});
+            bool customstarthover = CheckCollisionPointRec(cursor, {248, 24, 168, 56});
 
             ClearBackground(RAYWHITE);
             DrawTexture(customscreen, 0, 0, WHITE);
             DrawTexture(customsettingsbox, 0, 0, WHITE);
-            //minus and plus
+            //custom start button
+            if(customstarthover){
+                DrawTexture(cstarthover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    screen = 4;
+                    countdownstart = true;
+                    startTime = GetTime();
+                }
+            }
+            else{
+                DrawTexture(cstart, 0, 0, WHITE);
+            }
+            //start time minus and plus
             if(stminushover){
-                DrawTexture(stminus, 0, 0, WHITE);
+                DrawTexture(stminusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     starttimespeed--;
                 }
@@ -504,7 +547,7 @@ int main(){
                 DrawTexture(stminus, 0, 0, WHITE);
             }
             if(stplushover){
-                DrawTexture(stplus, 0, 0, WHITE);
+                DrawTexture(stplusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     starttimespeed++;
                 }
@@ -518,10 +561,62 @@ int main(){
             else if(starttimespeed >= 7){
                 starttimespeed = 7;
             }
+            //bomb time minus and plus
+            if(btminushover){
+                DrawTexture(btminusho, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    bombtimespeed--;
+                }
+            }
+            else{
+                DrawTexture(btminus, 0, 0, WHITE);
+            }
+            if(btplushover){
+                DrawTexture(btplusho, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    bombtimespeed++;
+                }
+            }
+            else{
+                DrawTexture(btplus, 0, 0, WHITE);
+            }
+            if(bombtimespeed <= 1){
+                bombtimespeed = 1;
+            }
+            else if(bombtimespeed >= 7){
+                bombtimespeed = 7;
+            }
+            //winscore minus and plus
+            if(wsminushover){
+                DrawTexture(wsminusho, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    winscore--;
+                }
+            }
+            else{
+                DrawTexture(wsminus, 0, 0, WHITE);
+            }
+            if(wsplushover){
+                DrawTexture(wsplusho, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    winscore++;
+                }
+            }
+            else{
+                DrawTexture(wsplus, 0, 0, WHITE);
+            }
+            if(winscore <= 3){
+                winscore = 3;
+            }
+            else if(winscore >= 25){
+                winscore = 50;
+            }
 
-            DrawText(TextFormat("Starting Timer: %i", starttimespeed), 34, 125, 15, WHITE);
-            DrawText(TextFormat("Bomb Countdown: %i", bombtimespeed), 34, 201, 15, WHITE);
-            DrawText(TextFormat("Winning Score: %i", winscore), 34, 280, 15, WHITE);
+
+
+            DrawText(TextFormat("Starting Timer: %i", starttimespeed), 34, 125, 20, BROWN);
+            DrawText(TextFormat("Bomb Countdown: %i", bombtimespeed), 34, 201, 20, BROWN);
+            DrawText(TextFormat("Winning Score: %i", winscore), 34, 280, 20, BROWN);
 
             // back button
             if(customback1hover){
@@ -536,6 +631,16 @@ int main(){
 
 
 
+        }
+        else if(screen == 4){
+
+            //start of screen 4 code
+            ClearBackground(RAYWHITE);
+            DrawTexture(screen3, 0, 0, WHITE);
+
+            DrawTexture(bomb, 0, 0, WHITE);
+            DrawTexture(displaybox, 0, 0, WHITE);
+            
         }
         EndDrawing();
     }
