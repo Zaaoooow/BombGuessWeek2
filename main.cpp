@@ -89,6 +89,11 @@ int main(){
     Texture2D wsplusho = LoadTexture("assets/wsplusho.png");
     Texture2D cstart = LoadTexture("assets/customstart.png");
     Texture2D cstarthover = LoadTexture("assets/customstarthover.png");
+    Texture2D stats = LoadTexture("assets/stats.png");
+    Texture2D statshover = LoadTexture("assets/statshover.png");
+    Texture2D statsbutton = LoadTexture("assets/statsbutton.png");
+    Texture2D statsexit = LoadTexture("assets/statsexit.png");
+    Texture2D statsexithover = LoadTexture("assets/statsexithover.png");
 
     //make images sharp.
     SetTextureFilter(bground1, TEXTURE_FILTER_POINT);
@@ -143,6 +148,11 @@ int main(){
     SetTextureFilter(wsplusho, TEXTURE_FILTER_POINT);
     SetTextureFilter(cstart, TEXTURE_FILTER_POINT);
     SetTextureFilter(cstarthover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(stats, TEXTURE_FILTER_POINT);
+    SetTextureFilter(statsbutton, TEXTURE_FILTER_POINT);
+    SetTextureFilter(statshover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(statsexit, TEXTURE_FILTER_POINT);
+    SetTextureFilter(statsexithover, TEXTURE_FILTER_POINT);
 
     //sound/audio
     Sound clicksound = LoadSound("sound/clicksound.wav");
@@ -161,6 +171,26 @@ int main(){
     Music losemusic = LoadMusicStream("sound/losingscreen.mp3");
     Music screen2music = LoadMusicStream("sound/screen2music.mp3");
     Music custommusic = LoadMusicStream("sound/customscreen.mp3");
+    Texture2D audioOn = LoadTexture("assets/audio.png");
+    Texture2D audioOnhover = LoadTexture("assets/audiohover.png");
+    Texture2D audioOff = LoadTexture("assets/audioN.png");
+    Texture2D audioOffhover = LoadTexture("assets/audioNhover.png");
+    SetTextureFilter(audioOn, TEXTURE_FILTER_POINT);
+    SetTextureFilter(audioOff, TEXTURE_FILTER_POINT);
+    SetTextureFilter(audioOnhover, TEXTURE_FILTER_POINT);
+    SetTextureFilter(audioOffhover, TEXTURE_FILTER_POINT);
+
+    //settings
+    Texture2D settingpage = LoadTexture("assets/settingspage.png");
+    Texture2D settingbutton = LoadTexture("assets/settingsbutton.png");
+    Texture2D settinghover = LoadTexture("assets/settingsbuttonhover.png");
+    SetTextureFilter(settingpage, TEXTURE_FILTER_POINT);
+    SetTextureFilter(settingbutton, TEXTURE_FILTER_POINT);
+    SetTextureFilter(settinghover, TEXTURE_FILTER_POINT);
+    Texture2D settingexit = LoadTexture("assets/settingexit.png");
+    Texture2D settingexithover = LoadTexture("assets/settingexithover.png");
+    SetTextureFilter(settingexit, TEXTURE_FILTER_POINT);
+    SetTextureFilter(settingexithover, TEXTURE_FILTER_POINT);
 
 
     //guide screen bool
@@ -196,16 +226,41 @@ int main(){
     bool correctsoundplayed = false;
     float lastTickTime = 0;
     float countdownsound = 0;
-
+    int audioOffOn = 0;
+    bool music = true;
+    //streak
+    int streak = 0;
+    int beststreak = 0;
+    bool streakCount = false;
+    //stats
+    bool statscreen = false;
+    int totalgames = 0;
+    int totalwins = 0;
+    int totallosses = 0;
+    int winpercent = 0;
+    int totalcorrect = 0;
 
     SetMusicVolume(lobbymusic, 0.4f);
     bool lobbymusicplaying = true;
     PlayMusicStream(lobbymusic);
     SetMusicVolume(screen2music, 0.4f);
     SetMusicVolume(custommusic, 0.4f);
+    SetMusicVolume(winmusic, 0.06f);
+    SetMusicVolume(losemusic, 0.06f);
+
+    //settings
+    bool setting = false;
 
 
     while(!WindowShouldClose()){
+        //stats 
+        if(totalgames > 0){
+            winpercent = (totalwins * 100) / totalgames;
+        }
+        else{
+            winpercent = 0;
+        }
+        
         UpdateMusicStream(custommusic);
         UpdateMusicStream(screen2music);
         UpdateMusicStream(lobbymusic);
@@ -230,6 +285,11 @@ int main(){
             bool quithover = CheckCollisionPointRec(cursor, {141, 241, 228, 48});
             bool guidehover = CheckCollisionPointRec(cursor, {180, 320, 148, 44});
             bool guideExithover = CheckCollisionPointRec(cursor, {392, 92, 20, 20});
+            bool statbool = CheckCollisionPointRec(cursor, {36, 40, 48, 24});
+            bool statback = CheckCollisionPointRec(cursor, {415, 60, 28, 28});
+            bool settingbool = CheckCollisionPointRec(cursor, {412, 340, 56, 32});
+            bool settingback = CheckCollisionPointRec(cursor, {424, 64, 25, 25});
+
 
             //start of screen 0 code
             ClearBackground(RAYWHITE);
@@ -265,6 +325,80 @@ int main(){
             else{
                 DrawTexture(guideButton1Hover, 0, 0, WHITE);
             }
+            // audio
+            if(music){
+                SetMusicVolume(lobbymusic, 0.4f);
+                SetMusicVolume(screen2music, 0.4f);
+                SetMusicVolume(custommusic, 0.04f);
+                SetMusicVolume(winmusic, 0.8f);
+                SetMusicVolume(losemusic, 0.6f);
+            }
+            else if(!music){
+                SetMusicVolume(lobbymusic, 0.0f);
+                SetMusicVolume(screen2music, 0.0f);
+                SetMusicPan(custommusic, 0.0f);
+                SetMusicVolume(winmusic, 0.0f);
+                SetMusicVolume(losemusic, 0.0f);
+            }
+            //settings
+            if(settingbool){
+                DrawTexture(settinghover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
+                    setting = true;
+                }
+            }
+            else{
+                DrawTexture(settingbutton, 0, 0, WHITE);
+            }
+            //stats
+            if(statbool){
+                DrawText("STATS", 42, 48, 10, WHITE);
+                DrawTexture(statshover, 0, 0, WHITE);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && setting != true){
+                    statscreen = true;
+                    PlaySound(clicksound);
+                }
+            }
+            else{
+                DrawText("STATS", 42, 48, 10, WHITE);
+                DrawTexture(statsbutton, 0, 0, WHITE);
+            }
+            if(statscreen == true && setting == false){
+                DrawTexture(stats, 0, 0, WHITE);
+                DrawText(TextFormat("Total Games: %i", totalgames), 50, 125, 25, WHITE);
+                DrawText(TextFormat("Total Wins: %i", totalwins), 50, 175, 25, WHITE);
+                DrawText(TextFormat("Total Losses: %i", totallosses), 50, 225, 25, WHITE);
+                DrawText(TextFormat("Total Correct: %i", totalcorrect), 50, 275, 25, WHITE);
+                DrawText(TextFormat("Winrate: %i%%", winpercent), 300, 125, 25, WHITE);
+                DrawText(TextFormat("Streak: %i", streak), 300, 175, 25, WHITE);
+                DrawText(TextFormat("/Highest: %i", beststreak), 300, 200, 25, WHITE);
+                if(statback){
+                    DrawTexture(statsexithover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
+                        statscreen = false;
+                    }
+                }
+                else{
+                    DrawTexture(statsexit, 0, 0, WHITE);
+                }
+            }
+            //settings
+            if(setting && !statscreen){
+                DrawTexture(settingpage, 0, 0, WHITE);
+                if(settingback){
+                    DrawTexture(settingexithover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
+                        setting = false;
+                    }
+                }
+                else{
+                    DrawTexture(settingexit, 0, 0, WHITE);
+                }
+                
+            }
 
             //guide screen code
             if(guideScreen == true){
@@ -298,11 +432,15 @@ int main(){
             
             DrawTexture(screen2, 0, 0, WHITE);
 
+            DrawText(TextFormat("STREAK: %i", streak), 15, 45, 15, GREEN);
+            DrawText(TextFormat("HIGHEST: %i", beststreak), 15, 65, 15, RED);
+
             if(normalmodehover){
                 DrawTexture(normalmode1hover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     PlaySound(screensound);
                     screen = 2;
+                    streakCount = false;
                     PlayMusicStream(screen2music);
                     countdownstart = true;
                     startTime = GetTime();
@@ -404,6 +542,9 @@ int main(){
                 }
                 else if(gamestarted && bombcountdown <= 0){
                     if(answer != correctans){
+                        streak = 0;
+                        totalgames++;
+                        totallosses++;
                         PlayMusicStream(losemusic);
                         PlaySound(explosion);
                         StopMusicStream(screen2music);
@@ -529,11 +670,15 @@ int main(){
                 if(correctans == answer){
                     if(!correctsoundplayed){
                         PlaySound(correctsound);
+                        totalcorrect++;
                         correctsoundplayed = true;
                     }
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
+                    streak = 0;
+                    totalgames++;
+                    totallosses++;
                     PlayMusicStream(losemusic);
                     PlaySound(explosion);
                     StopMusicStream(screen2music);
@@ -542,6 +687,15 @@ int main(){
                 }
             }
             if(score >= 3 && !gameover){
+                if(!streakCount){
+                    streak++;
+                    totalgames++;
+                    totalwins++;
+                    if(streak >= beststreak){
+                        beststreak = streak;
+                    }
+                    streakCount = true;
+                }
                 DrawTexture(winscreen, 0, 0, WHITE);
                 gamestarted = false;
                 countdownstart = false;
@@ -907,6 +1061,7 @@ int main(){
             if(gamestarted && answer != -1){
                 if(answer == correctans){
                     if(!correctsoundplayed){
+                        totalcorrect++;
                         PlaySound(correctsound);
                         correctsoundplayed = true;
                     }
@@ -977,6 +1132,7 @@ int main(){
         }
         EndDrawing();
     }
+    UnloadMusicStream(custommusic);
     UnloadMusicStream(screen2music);
     UnloadMusicStream(winmusic);
     UnloadMusicStream(losemusic);
