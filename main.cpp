@@ -157,6 +157,10 @@ int main(){
     Sound bombtick = LoadSound("sound/bombtimer.wav");
     Sound countend = LoadSound("sound/countdownend.wav");
     Sound countdowntimer = LoadSound("sound/countdown.wav");
+    Music winmusic = LoadMusicStream("sound/winningscreenmusic.mp3");
+    Music losemusic = LoadMusicStream("sound/losingscreen.mp3");
+    Music screen2music = LoadMusicStream("sound/screen2music.mp3");
+    Music custommusic = LoadMusicStream("sound/customscreen.mp3");
 
 
     //guide screen bool
@@ -197,9 +201,16 @@ int main(){
     SetMusicVolume(lobbymusic, 0.4f);
     bool lobbymusicplaying = true;
     PlayMusicStream(lobbymusic);
+    SetMusicVolume(screen2music, 0.4f);
+    SetMusicVolume(custommusic, 0.4f);
+
 
     while(!WindowShouldClose()){
+        UpdateMusicStream(custommusic);
+        UpdateMusicStream(screen2music);
         UpdateMusicStream(lobbymusic);
+        UpdateMusicStream(winmusic);
+        UpdateMusicStream(losemusic);
         if((screen == 2 || screen == 4) && lobbymusicplaying){
             StopMusicStream(lobbymusic);
             lobbymusicplaying = false;
@@ -292,6 +303,7 @@ int main(){
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     PlaySound(screensound);
                     screen = 2;
+                    PlayMusicStream(screen2music);
                     countdownstart = true;
                     startTime = GetTime();
                     countdownsound = GetTime() - 1;
@@ -392,7 +404,9 @@ int main(){
                 }
                 else if(gamestarted && bombcountdown <= 0){
                     if(answer != correctans){
+                        PlayMusicStream(losemusic);
                         PlaySound(explosion);
+                        StopMusicStream(screen2music);
                         gameover = true;
                         gamestarted = false;
                     }
@@ -401,6 +415,8 @@ int main(){
                     }
                     if(score >= 3){
                         PlaySound(winning);
+                        PlayMusicStream(winmusic);
+                        StopMusicStream(screen2music);
                         gamestarted = false;
                         countdownstart = false;
                     }
@@ -518,7 +534,9 @@ int main(){
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
+                    PlayMusicStream(losemusic);
                     PlaySound(explosion);
+                    StopMusicStream(screen2music);
                     gameover = true;
                     gamestarted = false;
                 }
@@ -530,6 +548,9 @@ int main(){
                 if(winplay || winagain){
                     DrawTexture(winpahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        StopMusicStream(screen2music);
+                        StopMusicStream(losemusic);
+                        StopMusicStream(winmusic);
                         PlaySound(clicksound);
                         screen = 1;
 
@@ -560,6 +581,9 @@ int main(){
                 if(boompa1hover){
                     DrawTexture(boompahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        StopMusicStream(screen2music);
+                        StopMusicStream(losemusic);
+                        StopMusicStream(winmusic);
                         PlaySound(clicksound);
                         screen = 1;
                         
@@ -603,6 +627,7 @@ int main(){
             if(customstarthover){
                 DrawTexture(cstarthover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlayMusicStream(custommusic);
                     PlaySound(screensound);
                     screen = 4;
                     countdownstart = true;
@@ -765,7 +790,6 @@ int main(){
             }
 
             if(score >= winscore){
-                PlaySound(winning);
                 gamestarted = false;
                 countdownstart = false;
             }
@@ -782,7 +806,9 @@ int main(){
                 else if(bombcountdown <= 0){
                     gamestarted = false;
                     if(answer != correctans){
+                        StopMusicStream(custommusic);
                         PlaySound(explosion);
+                        PlayMusicStream(losemusic);
                         gameover = true;
                         countdownstart = false;
                     }
@@ -791,16 +817,19 @@ int main(){
                     }
                     if(score >= winscore){
                         PlaySound(winning);
+                        StopMusicStream(custommusic);
+                        PlayMusicStream(winmusic);
+                        StopMusicStream(screen2music);
                         gamestarted = false;
                         countdownstart = false;
                     }
                     else{
-                    startTime = GetTime();
-                    countdownstart = true;
-                    gamestarted = false;
-                    answer = -1;
-                    correctsoundplayed = false;
-                    customrandom = GetRandomValue(1, 9);
+                        startTime = GetTime();
+                        countdownstart = true;
+                        gamestarted = false;
+                        answer = -1;
+                        correctsoundplayed = false;
+                        customrandom = GetRandomValue(1, 9);
                     }
                 }
                 
@@ -884,7 +913,10 @@ int main(){
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
+                    PlayMusicStream(losemusic);
                     PlaySound(explosion);
+                    StopMusicStream(custommusic);
+                    StopMusicStream(screen2music);
                     gameover = true;
                     gamestarted = false;
                     countdownstart = false;
@@ -899,6 +931,8 @@ int main(){
                 if(boompa1hover){
                     DrawTexture(boompahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        StopMusicStream(losemusic);
+                        StopMusicStream(winmusic);
                         PlaySound(clicksound);
                         screen = 1;
                         score = 0;
@@ -914,7 +948,6 @@ int main(){
 
             }
             if(score >= winscore && !gameover){
-                PlaySound(winning);
                 DrawTexture(winscreen, 0, 0, WHITE);
                 gamestarted = false;
                 countdownstart = false;
@@ -922,6 +955,8 @@ int main(){
                 if(winplay || winagain){
                     DrawTexture(winpahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        StopMusicStream(losemusic);
+                        StopMusicStream(winmusic);
                         PlaySound(clicksound);
                         screen = 1;
                         score = 0;
@@ -942,6 +977,9 @@ int main(){
         }
         EndDrawing();
     }
+    UnloadMusicStream(screen2music);
+    UnloadMusicStream(winmusic);
+    UnloadMusicStream(losemusic);
     UnloadMusicStream(lobbymusic);
     CloseAudioDevice();
     CloseWindow();
