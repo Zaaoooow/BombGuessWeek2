@@ -153,6 +153,10 @@ int main(){
     Music lobbymusic = LoadMusicStream("sound/lobby.mp3");
     Sound explosion = LoadSound("sound/explosion.mp3");
     Sound winning = LoadSound("sound/winning.mp3");
+    Sound correctsound = LoadSound("sound/correct.mp3");
+    Sound bombtick = LoadSound("sound/bombtimer.wav");
+    Sound countend = LoadSound("sound/countdownend.wav");
+    Sound countdowntimer = LoadSound("sound/countdown.wav");
 
 
     //guide screen bool
@@ -184,6 +188,10 @@ int main(){
     int customrandom;
     //highscore
     int highscore = 0;
+    //sound
+    bool correctsoundplayed = false;
+    float lastTickTime = 0;
+    float countdownsound = 0;
 
 
     SetMusicVolume(lobbymusic, 0.4f);
@@ -286,6 +294,7 @@ int main(){
                     screen = 2;
                     countdownstart = true;
                     startTime = GetTime();
+                    countdownsound = GetTime() - 1;
                 }
             }
             else{
@@ -324,15 +333,25 @@ int main(){
             // normal countdown
 
             if(countdownstart && !gamestarted){
-            countdown = 4 - (GetTime() - startTime);
-                if(countdown == 0){
+                countdown = 4 - (GetTime() - startTime);
+                if(countdown > 0 && GetTime() - countdownsound >= 1){
+                    PlaySound(countdowntimer);
+                    countdownsound = GetTime();
+                }
+                if(countdown <= 0){
                     countdown = 0;
+                    PlaySound(countend);
                     gamestarted = true;
                     bombstartTime = GetTime();
+                    lastTickTime = GetTime();
                 }
             }
             if(gamestarted){
-                bombcountdown = 4 - (GetTime() - bombstartTime);
+                bombcountdown = 5 - (GetTime() - bombstartTime);
+                if(GetTime() - lastTickTime >= 1){
+                    PlaySound(bombtick);
+                    lastTickTime = GetTime();
+                }
             }
 
 
@@ -381,6 +400,7 @@ int main(){
                         score++;
                     }
                     if(score >= 3){
+                        PlaySound(winning);
                         gamestarted = false;
                         countdownstart = false;
                     }
@@ -389,6 +409,7 @@ int main(){
                     countdownstart = true;
                     gamestarted = false;
                     answer = -1;
+                    correctsoundplayed = false;
                     }
                 }
                 
@@ -490,6 +511,10 @@ int main(){
             // check answer
             if(gamestarted && answer != -1){
                 if(correctans == answer){
+                    if(!correctsoundplayed){
+                        PlaySound(correctsound);
+                        correctsoundplayed = true;
+                    }
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
@@ -516,6 +541,7 @@ int main(){
                         normaldisplays = 0;
                         countdown = 4;
                         bombcountdown = 4;
+                        correctsoundplayed = false;
 
                         normalrand1 = GetRandomValue(1, 9);
                         normalrand2 = GetRandomValue(1, 9);
@@ -582,6 +608,7 @@ int main(){
                     countdownstart = true;
                     gamestarted = false;
                     startTime = GetTime();
+                    countdownsound = GetTime() -1;
                     score = 0;
                     answer = -1;
                     gameover = false;
@@ -715,18 +742,30 @@ int main(){
             //custom countdown
             if(countdownstart && !gamestarted){
                 countdown = starttimespeed + 1 - (GetTime() - startTime);
+                if(countdown > 0 && GetTime() - countdownsound >= 1){
+                    PlaySound(countdowntimer);
+                    countdownsound = GetTime();
+                    countdownsound = GetTime();
+                }
                 if(countdown <= 0){
                     countdown = 0;
+                    PlaySound(countend);
                     gamestarted = true;
                     bombstartTime = GetTime();
+                    lastTickTime = GetTime();
                 }
             }
 
             if(gamestarted){
                 bombcountdown = bombtimespeed + 1 - (GetTime() - bombstartTime);
+                if(GetTime() - lastTickTime >= 1.0){
+                    PlaySound(bombtick);
+                    lastTickTime = GetTime();
+                }
             }
 
             if(score >= winscore){
+                PlaySound(winning);
                 gamestarted = false;
                 countdownstart = false;
             }
@@ -751,6 +790,7 @@ int main(){
                         score++;
                     }
                     if(score >= winscore){
+                        PlaySound(winning);
                         gamestarted = false;
                         countdownstart = false;
                     }
@@ -759,6 +799,7 @@ int main(){
                     countdownstart = true;
                     gamestarted = false;
                     answer = -1;
+                    correctsoundplayed = false;
                     customrandom = GetRandomValue(1, 9);
                     }
                 }
@@ -836,6 +877,10 @@ int main(){
 
             if(gamestarted && answer != -1){
                 if(answer == correctans){
+                    if(!correctsoundplayed){
+                        PlaySound(correctsound);
+                        correctsoundplayed = true;
+                    }
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
@@ -869,6 +914,7 @@ int main(){
 
             }
             if(score >= winscore && !gameover){
+                PlaySound(winning);
                 DrawTexture(winscreen, 0, 0, WHITE);
                 gamestarted = false;
                 countdownstart = false;
@@ -883,6 +929,7 @@ int main(){
                         gameover = false;
                         gamestarted = false;
                         countdownstart = false;
+                        correctsoundplayed = false;
                     }
                 }
                 else{
