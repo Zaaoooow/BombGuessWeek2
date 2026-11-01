@@ -47,8 +47,6 @@ int main(){
     Texture2D screen3 = LoadTexture("assets/screen3.png");
     Texture2D customscreen = LoadTexture("assets/customscreen.png");
     
-
-    //normal mode choices
     //yellow
     Texture2D c1 = LoadTexture("assets/c1.png");
     Texture2D c4 = LoadTexture("assets/c4.png");
@@ -89,6 +87,8 @@ int main(){
     Texture2D wsplusho = LoadTexture("assets/wsplusho.png");
     Texture2D cstart = LoadTexture("assets/customstart.png");
     Texture2D cstarthover = LoadTexture("assets/customstarthover.png");
+
+    // statistics page
     Texture2D stats = LoadTexture("assets/stats.png");
     Texture2D statshover = LoadTexture("assets/statshover.png");
     Texture2D statsbutton = LoadTexture("assets/statsbutton.png");
@@ -96,6 +96,7 @@ int main(){
     Texture2D statsexithover = LoadTexture("assets/statsexithover.png");
 
     //make images sharp.
+    //screen1
     SetTextureFilter(bground1, TEXTURE_FILTER_POINT);
     SetTextureFilter(pButton1, TEXTURE_FILTER_POINT);
     SetTextureFilter(pButton1Hover, TEXTURE_FILTER_POINT);
@@ -106,6 +107,7 @@ int main(){
     SetTextureFilter(guidePage, TEXTURE_FILTER_POINT);
     SetTextureFilter(guidePageExit, TEXTURE_FILTER_POINT);
     SetTextureFilter(guidePageExithover, TEXTURE_FILTER_POINT);
+    //screen2
     SetTextureFilter(screen2, TEXTURE_FILTER_POINT);
     SetTextureFilter(normalmode1, TEXTURE_FILTER_POINT);
     SetTextureFilter(normalmode1hover, TEXTURE_FILTER_POINT);
@@ -113,6 +115,7 @@ int main(){
     SetTextureFilter(customMode1Hover, TEXTURE_FILTER_POINT);
     SetTextureFilter(backbutton, TEXTURE_FILTER_POINT);
     SetTextureFilter(backbuttonhover, TEXTURE_FILTER_POINT);
+    //screen3
     SetTextureFilter(normalpage, TEXTURE_FILTER_POINT);
     SetTextureFilter(bomb, TEXTURE_FILTER_POINT);
     SetTextureFilter(ezmodebutton1, TEXTURE_FILTER_POINT);
@@ -129,6 +132,7 @@ int main(){
     SetTextureFilter(winpa, TEXTURE_FILTER_POINT);
     SetTextureFilter(winpahover, TEXTURE_FILTER_POINT);
     SetTextureFilter(correct, TEXTURE_FILTER_POINT);
+    //customs creen
     SetTextureFilter(screen3, TEXTURE_FILTER_POINT);
     SetTextureFilter(customscreen, TEXTURE_FILTER_POINT);
     SetTextureFilter(customback, TEXTURE_FILTER_POINT);
@@ -148,6 +152,7 @@ int main(){
     SetTextureFilter(wsplusho, TEXTURE_FILTER_POINT);
     SetTextureFilter(cstart, TEXTURE_FILTER_POINT);
     SetTextureFilter(cstarthover, TEXTURE_FILTER_POINT);
+    //statistics page
     SetTextureFilter(stats, TEXTURE_FILTER_POINT);
     SetTextureFilter(statsbutton, TEXTURE_FILTER_POINT);
     SetTextureFilter(statshover, TEXTURE_FILTER_POINT);
@@ -156,7 +161,6 @@ int main(){
 
     //sound/audio
     Sound clicksound = LoadSound("sound/clicksound.wav");
-    Sound gamestart = LoadSound("sound/gamestart.wav");
     Sound minusplus = LoadSound("sound/minusplus.wav");
     Sound screensound = LoadSound("sound/screen.wav");
     Sound back = LoadSound("sound/back.wav");
@@ -171,14 +175,6 @@ int main(){
     Music losemusic = LoadMusicStream("sound/losingscreen.mp3");
     Music screen2music = LoadMusicStream("sound/screen2music.mp3");
     Music custommusic = LoadMusicStream("sound/customscreen.mp3");
-    Texture2D audioOn = LoadTexture("assets/audio.png");
-    Texture2D audioOnhover = LoadTexture("assets/audiohover.png");
-    Texture2D audioOff = LoadTexture("assets/audioN.png");
-    Texture2D audioOffhover = LoadTexture("assets/audioNhover.png");
-    SetTextureFilter(audioOn, TEXTURE_FILTER_POINT);
-    SetTextureFilter(audioOff, TEXTURE_FILTER_POINT);
-    SetTextureFilter(audioOnhover, TEXTURE_FILTER_POINT);
-    SetTextureFilter(audioOffhover, TEXTURE_FILTER_POINT);
 
     //settings
     Texture2D settingpage = LoadTexture("assets/settingspage.png");
@@ -191,6 +187,14 @@ int main(){
     Texture2D settingexithover = LoadTexture("assets/settingexithover.png");
     SetTextureFilter(settingexit, TEXTURE_FILTER_POINT);
     SetTextureFilter(settingexithover, TEXTURE_FILTER_POINT);
+    Texture2D musicOn = LoadTexture("assets/musicOn.png");
+    Texture2D musicOff = LoadTexture("assets/musicOff.png");
+    SetTextureFilter(musicOff, TEXTURE_FILTER_POINT);
+    SetTextureFilter(musicOn, TEXTURE_FILTER_POINT);
+    Texture2D audioOn = LoadTexture("assets/audiosetting.png");
+    Texture2D audioOff = LoadTexture("assets/audiosettingoff.png");
+    SetTextureFilter(audioOn, TEXTURE_FILTER_POINT);
+    SetTextureFilter(audioOff, TEXTURE_FILTER_POINT);
 
 
     //guide screen bool
@@ -228,6 +232,7 @@ int main(){
     float countdownsound = 0;
     int audioOffOn = 0;
     bool music = true;
+    bool audio = true;
     //streak
     int streak = 0;
     int beststreak = 0;
@@ -239,6 +244,8 @@ int main(){
     int totallosses = 0;
     int winpercent = 0;
     int totalcorrect = 0;
+
+    //screen shake
 
     SetMusicVolume(lobbymusic, 0.4f);
     bool lobbymusicplaying = true;
@@ -279,6 +286,8 @@ int main(){
         
         Vector2 cursor = GetMousePosition();
 
+        bool settingsOn = false;
+
         // menu screen
         if(screen == 0){
             bool playhover = CheckCollisionPointRec(cursor, {141, 161, 228, 48});
@@ -289,6 +298,8 @@ int main(){
             bool statback = CheckCollisionPointRec(cursor, {415, 60, 28, 28});
             bool settingbool = CheckCollisionPointRec(cursor, {412, 340, 56, 32});
             bool settingback = CheckCollisionPointRec(cursor, {424, 64, 25, 25});
+            bool musicset = CheckCollisionPointRec(cursor, {124, 128, 100, 40});
+            bool audioset = CheckCollisionPointRec(cursor, {124, 188, 100, 40});
 
 
             //start of screen 0 code
@@ -297,7 +308,7 @@ int main(){
             DrawTexture(bground1, 0, 0, WHITE);
             if(playhover){
                 DrawTexture(pButton1, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
                     screen = 1;
                     PlaySound(screensound);
                 }
@@ -307,7 +318,7 @@ int main(){
             }
             if(quithover){
                 DrawTexture(qButton1, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
                     PlaySound(clicksound);
                     CloseWindow();
                 }
@@ -317,7 +328,7 @@ int main(){
             }
             if(guidehover){
                 DrawTexture(guideButton1, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
                     PlaySound(clicksound);
                     guideScreen = true;
                 }
@@ -340,15 +351,42 @@ int main(){
                 SetMusicVolume(winmusic, 0.0f);
                 SetMusicVolume(losemusic, 0.0f);
             }
+            if(audio){
+                SetSoundVolume(back, 0.4f);
+                SetSoundVolume(bombtick, 0.4f);
+                SetSoundVolume(clicksound, 0.5f);
+                SetSoundVolume(correctsound, 0.5f);
+                SetSoundVolume(countdowntimer, 0.5f);
+                SetSoundVolume(countend, 0.5f);
+                SetSoundVolume(explosion, 0.5f);
+                SetSoundVolume(minusplus, 0.5f);
+                SetSoundVolume(screensound, 0.5f);
+                SetSoundVolume(winning, 0.5f);
+            }
+            else if(!audio){
+                SetSoundVolume(back, 0.0f);
+                SetSoundVolume(bombtick, 0.0f);
+                SetSoundVolume(clicksound, 0.0f);
+                SetSoundVolume(correctsound, 0.0f);
+                SetSoundVolume(countdowntimer, 0.0f);
+                SetSoundVolume(countend, 0.0f);
+                SetSoundVolume(explosion, 0.0f);
+                SetSoundVolume(minusplus, 0.0f);
+                SetSoundVolume(screensound, 0.0f);
+                SetSoundVolume(winning, 0.0f);
+                music = false;
+            }
             //settings
             if(settingbool){
+                DrawText("Settings", 419, 351, 10, WHITE);
                 DrawTexture(settinghover, 0, 0, WHITE);
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !statscreen){
                     PlaySound(clicksound);
                     setting = true;
                 }
             }
             else{
+                DrawText("Settings", 419, 351, 10, WHITE);
                 DrawTexture(settingbutton, 0, 0, WHITE);
             }
             //stats
@@ -387,6 +425,42 @@ int main(){
             //settings
             if(setting && !statscreen){
                 DrawTexture(settingpage, 0, 0, WHITE);
+                if(music){
+                    DrawTexture(musicOn, 0, 0, WHITE);
+                    if(musicset){
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            music = false;
+                        }
+                    }
+                }
+                else if(!music){
+                    DrawTexture(musicOff, 0, 0, WHITE);
+                    if(musicset){
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            music = true;
+                        }
+                    }
+                }
+                else{
+                    DrawTexture(musicOn, 0, 0, WHITE);
+                }
+                if(audio){
+                    DrawTexture(audioOn, 0, 0, WHITE);
+                    if(audioset){
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            audio = false;
+                        }
+                    }
+                }
+                else if(!audio){
+                    DrawTexture(audioOff, 0, 0, WHITE);
+                    if(audioset){
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            audio = true;
+                        }
+                    }
+                }
+
                 if(settingback){
                     DrawTexture(settingexithover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
