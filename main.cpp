@@ -2,6 +2,7 @@
 #include <raylib.h>
 
 int main(){
+    InitAudioDevice();
     InitWindow(512, 416, "Bomb Guess");
     SetTargetFPS(60);
 
@@ -143,6 +144,16 @@ int main(){
     SetTextureFilter(cstart, TEXTURE_FILTER_POINT);
     SetTextureFilter(cstarthover, TEXTURE_FILTER_POINT);
 
+    //sound/audio
+    Sound clicksound = LoadSound("sound/clicksound.wav");
+    Sound gamestart = LoadSound("sound/gamestart.wav");
+    Sound minusplus = LoadSound("sound/minusplus.wav");
+    Sound screensound = LoadSound("sound/screen.wav");
+    Sound back = LoadSound("sound/back.wav");
+    Music lobbymusic = LoadMusicStream("sound/lobby.mp3");
+    Sound explosion = LoadSound("sound/explosion.mp3");
+    Sound winning = LoadSound("sound/winning.mp3");
+
 
     //guide screen bool
     bool guideScreen = false;
@@ -171,8 +182,25 @@ int main(){
     int winscore = 1;
     //screen 4
     int customrandom;
+    //highscore
+    int highscore = 0;
+
+
+    SetMusicVolume(lobbymusic, 0.4f);
+    bool lobbymusicplaying = true;
+    PlayMusicStream(lobbymusic);
 
     while(!WindowShouldClose()){
+        UpdateMusicStream(lobbymusic);
+        if((screen == 2 || screen == 4) && lobbymusicplaying){
+            StopMusicStream(lobbymusic);
+            lobbymusicplaying = false;
+        }
+        if((screen != 2 && screen != 4) && !lobbymusicplaying){
+            SeekMusicStream(lobbymusic, 0.0f);
+            PlayMusicStream(lobbymusic);
+            lobbymusicplaying = true;
+        }
         BeginDrawing();
         
         Vector2 cursor = GetMousePosition();
@@ -192,6 +220,7 @@ int main(){
                 DrawTexture(pButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     screen = 1;
+                    PlaySound(screensound);
                 }
             }
             else{
@@ -200,6 +229,7 @@ int main(){
             if(quithover){
                 DrawTexture(qButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
                     CloseWindow();
                 }
             }
@@ -209,6 +239,7 @@ int main(){
             if(guidehover){
                 DrawTexture(guideButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
                     guideScreen = true;
                 }
             }
@@ -229,6 +260,7 @@ int main(){
                 if(guideExithover){
                     DrawTexture(guidePageExithover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         guideScreen = false;
                     }
                 }
@@ -250,6 +282,7 @@ int main(){
             if(normalmodehover){
                 DrawTexture(normalmode1hover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(screensound);
                     screen = 2;
                     countdownstart = true;
                     startTime = GetTime();
@@ -261,6 +294,7 @@ int main(){
             if(customhover){
                 DrawTexture(customMode1Hover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(screensound);
                     screen = 3;
                 }
             }
@@ -270,6 +304,7 @@ int main(){
             if(backhover){
                 DrawTexture(backbuttonhover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(back);
                     screen = 0;
                 }
             }
@@ -336,9 +371,11 @@ int main(){
                 else if(bombcountdown == 1){
                     DrawText("1", 252, 180, 40, BLACK);
                 }
-                else if(bombcountdown == 0){
+                else if(gamestarted && bombcountdown <= 0){
                     if(answer != correctans){
+                        PlaySound(explosion);
                         gameover = true;
+                        gamestarted = false;
                     }
                     else{
                         score++;
@@ -416,6 +453,7 @@ int main(){
                 DrawTexture(ezmodebutton1hover, 0, 0, WHITE);
                 if(gamestarted){
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         answer = 0;
                     }
                 }
@@ -427,6 +465,7 @@ int main(){
                 DrawTexture(ezmodebutton2hover, 0, 0, WHITE);
                 if(gamestarted){
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         answer = 1;
                     }
                 }
@@ -438,6 +477,7 @@ int main(){
                 DrawTexture(ezmodebutton3hover, 0, 0, WHITE);
                 if(gamestarted){
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         answer = 2;
                     }
                 }
@@ -453,7 +493,9 @@ int main(){
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
+                    PlaySound(explosion);
                     gameover = true;
+                    gamestarted = false;
                 }
             }
             if(score >= 3 && !gameover){
@@ -463,6 +505,7 @@ int main(){
                 if(winplay || winagain){
                     DrawTexture(winpahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         screen = 1;
 
                         gameover = false;
@@ -491,6 +534,7 @@ int main(){
                 if(boompa1hover){
                     DrawTexture(boompahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         screen = 1;
                         
                         gameover = false;
@@ -533,6 +577,7 @@ int main(){
             if(customstarthover){
                 DrawTexture(cstarthover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(screensound);
                     screen = 4;
                     countdownstart = true;
                     gamestarted = false;
@@ -552,6 +597,7 @@ int main(){
             if(stminushover){
                 DrawTexture(stminusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     starttimespeed--;
                 }
             }
@@ -561,6 +607,7 @@ int main(){
             if(stplushover){
                 DrawTexture(stplusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     starttimespeed++;
                 }
             }
@@ -577,6 +624,7 @@ int main(){
             if(btminushover){
                 DrawTexture(btminusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     bombtimespeed--;
                 }
             }
@@ -586,6 +634,7 @@ int main(){
             if(btplushover){
                 DrawTexture(btplusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     bombtimespeed++;
                 }
             }
@@ -602,6 +651,7 @@ int main(){
             if(wsminushover){
                 DrawTexture(wsminusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     winscore--;
                 }
             }
@@ -611,6 +661,7 @@ int main(){
             if(wsplushover){
                 DrawTexture(wsplusho, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(minusplus);
                     winscore++;
                 }
             }
@@ -634,6 +685,7 @@ int main(){
             if(customback1hover){
                 DrawTexture(custombackhover, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(back);
                     screen = 1;
                 }
             }
@@ -691,7 +743,9 @@ int main(){
                 else if(bombcountdown <= 0){
                     gamestarted = false;
                     if(answer != correctans){
+                        PlaySound(explosion);
                         gameover = true;
+                        countdownstart = false;
                     }
                     else{
                         score++;
@@ -752,6 +806,7 @@ int main(){
             if(choice1hover){
                 DrawTexture(ezmodebutton1hover, 0, 0, WHITE);
                 if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
                     answer = 0;
                 }
             }
@@ -761,6 +816,7 @@ int main(){
             if(choice2hover){
                 DrawTexture(ezmodebutton2hover, 0, 0, WHITE);
                 if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
                     answer = 1;
                 }
             }
@@ -770,6 +826,7 @@ int main(){
             if(choice3hover){
                 DrawTexture(ezmodebutton3hover, 0, 0, WHITE);
                 if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    PlaySound(clicksound);
                     answer = 2;
                 }
             }
@@ -782,6 +839,7 @@ int main(){
                     DrawTexture(correct, 0, 0, WHITE);
                 }
                 else{
+                    PlaySound(explosion);
                     gameover = true;
                     gamestarted = false;
                     countdownstart = false;
@@ -796,6 +854,7 @@ int main(){
                 if(boompa1hover){
                     DrawTexture(boompahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         screen = 1;
                         score = 0;
                         answer = -1;
@@ -817,6 +876,7 @@ int main(){
                 if(winplay || winagain){
                     DrawTexture(winpahover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        PlaySound(clicksound);
                         screen = 1;
                         score = 0;
                         answer = -1;
@@ -835,6 +895,8 @@ int main(){
         }
         EndDrawing();
     }
+    UnloadMusicStream(lobbymusic);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
