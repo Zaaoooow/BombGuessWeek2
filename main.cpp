@@ -1,14 +1,13 @@
+//bomb guess game using raylibs.
 #include <raylib.h>
-#include <chrono>
-#include <thread>
-#include <random>
 
 int main(){
     InitWindow(512, 416, "Bomb Guess");
     SetTargetFPS(60);
 
     int screen = 0;
-
+    
+    //screen0
     Texture2D bground1 = LoadTexture("assets/bg1.png");
     Texture2D pButton1 = LoadTexture("assets/PlayButton1.png");
     Texture2D pButton1Hover = LoadTexture("assets/PlayButton2.png");
@@ -19,6 +18,7 @@ int main(){
     Texture2D guidePage = LoadTexture("assets/guidepage.png");
     Texture2D guidePageExit = LoadTexture("assets/guidepageExit.png");
     Texture2D guidePageExithover = LoadTexture("assets/guidepageExitHover.png");
+    //screen1
     Texture2D screen2 = LoadTexture("assets/screen2.png");
     Texture2D normalmode1 = LoadTexture("assets/normal1.png");
     Texture2D normalmode1hover = LoadTexture("assets/normal1hover.png");
@@ -26,6 +26,7 @@ int main(){
     Texture2D customMode1Hover = LoadTexture("assets/customhover.png");
     Texture2D backbutton = LoadTexture("assets/backbuttonhover.png");
     Texture2D backbuttonhover = LoadTexture("assets/backbutton.png");
+    //screen2
     Texture2D normalpage = LoadTexture("assets/background3.png");
     Texture2D bomb = LoadTexture("assets/bomb.png");
     Texture2D ezmodebutton1 = LoadTexture("assets/choice1.png");
@@ -168,21 +169,11 @@ int main(){
     int starttimespeed = 1;
     int bombtimespeed = 1;
     int winscore = 1;
-    while(!WindowShouldClose()){
-        srand(time(NULL));
+    //screen 4
+    int customrandom;
 
-        //countdown timer
-        if(countdownstart && !gamestarted){
-            countdown = 4 - (GetTime() - startTime);
-            if(countdown == 0){
-                countdown = 0;
-                gamestarted = true;
-                bombstartTime = GetTime();
-            }
-        }
-        if(gamestarted){
-            bombcountdown = 4 - (GetTime() - bombstartTime);
-        }
+    while(!WindowShouldClose()){
+        BeginDrawing();
         
         Vector2 cursor = GetMousePosition();
 
@@ -294,6 +285,20 @@ int main(){
             bool boompa1hover = CheckCollisionPointRec(cursor, {204, 236, 144, 16});
             bool winplay = CheckCollisionPointRec(cursor, {292, 120, 56, 24});
             bool winagain = CheckCollisionPointRec(cursor, {332, 148, 80, 24});
+
+            // normal countdown
+
+            if(countdownstart && !gamestarted){
+            countdown = 4 - (GetTime() - startTime);
+                if(countdown == 0){
+                    countdown = 0;
+                    gamestarted = true;
+                    bombstartTime = GetTime();
+                }
+            }
+            if(gamestarted){
+                bombcountdown = 4 - (GetTime() - bombstartTime);
+            }
 
 
             ClearBackground(RAYWHITE);
@@ -530,7 +535,14 @@ int main(){
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     screen = 4;
                     countdownstart = true;
+                    gamestarted = false;
                     startTime = GetTime();
+                    score = 0;
+                    answer = -1;
+                    gameover = false;
+
+                    customrandom = GetRandomValue(1, 9);
+
                 }
             }
             else{
@@ -609,7 +621,7 @@ int main(){
                 winscore = 3;
             }
             else if(winscore >= 25){
-                winscore = 50;
+                winscore = 25;
             }
 
 
@@ -634,12 +646,191 @@ int main(){
         }
         else if(screen == 4){
 
+            bool choice1hover = CheckCollisionPointRec(cursor, {191, 284, 32, 32});
+            bool choice2hover = CheckCollisionPointRec(cursor, {240, 284, 32, 32});
+            bool choice3hover = CheckCollisionPointRec(cursor, {288, 284, 32, 32});
+            bool boompa1hover = CheckCollisionPointRec(cursor, {204, 236, 244, 16});
+            bool winplay = CheckCollisionPointRec(cursor, {292, 120, 56, 24});
+            bool winagain = CheckCollisionPointRec(cursor, {332, 148, 80, 24});
+
             //start of screen 4 code
             ClearBackground(RAYWHITE);
             DrawTexture(screen3, 0, 0, WHITE);
 
             DrawTexture(bomb, 0, 0, WHITE);
             DrawTexture(displaybox, 0, 0, WHITE);
+
+            //custom countdown
+            if(countdownstart && !gamestarted){
+                countdown = starttimespeed + 1 - (GetTime() - startTime);
+                if(countdown <= 0){
+                    countdown = 0;
+                    gamestarted = true;
+                    bombstartTime = GetTime();
+                }
+            }
+
+            if(gamestarted){
+                bombcountdown = bombtimespeed + 1 - (GetTime() - bombstartTime);
+            }
+
+            if(score >= winscore){
+                gamestarted = false;
+                countdownstart = false;
+            }
+
+            if(countdownstart && countdown > 0){
+                DrawText(TextFormat("%i", countdown), 242, 68, 60, GREEN);
+            }
+
+            if(gamestarted){
+                //bomb timer
+                if(bombcountdown > 0){
+                    DrawText(TextFormat("%i", bombcountdown), 247, 180, 40, BLACK);
+                }
+                else if(bombcountdown <= 0){
+                    gamestarted = false;
+                    if(answer != correctans){
+                        gameover = true;
+                    }
+                    else{
+                        score++;
+                    }
+                    if(score >= winscore){
+                        gamestarted = false;
+                        countdownstart = false;
+                    }
+                    else{
+                    startTime = GetTime();
+                    countdownstart = true;
+                    gamestarted = false;
+                    answer = -1;
+                    customrandom = GetRandomValue(1, 9);
+                    }
+                }
+                
+                x = customrandom;
+
+
+                if(x == 1){
+                    DrawTexture(c1, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 2){
+                    DrawTexture(c2, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 3){
+                    DrawTexture(c3, 0, 0, WHITE);
+                    correctans = 0;
+                }
+                else if(x == 4){
+                    DrawTexture(c4, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 5){
+                    DrawTexture(c5, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 6){
+                    DrawTexture(c6, 0, 0, WHITE);
+                    correctans = 1;
+                }
+                else if(x == 7){
+                    DrawTexture(c7, 0, 0, WHITE);
+                    correctans = 2;
+                }
+                else if(x == 8){
+                    DrawTexture(c8, 0, 0, WHITE);
+                    correctans = 2;
+                }
+                else if(x == 9){
+                    DrawTexture(c9, 0, 0, WHITE);
+                    correctans = 2;
+                }
+            }
+            if(choice1hover){
+                DrawTexture(ezmodebutton1hover, 0, 0, WHITE);
+                if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    answer = 0;
+                }
+            }
+            else{
+                DrawTexture(ezmodebutton1, 0, 0, WHITE);
+            }
+            if(choice2hover){
+                DrawTexture(ezmodebutton2hover, 0, 0, WHITE);
+                if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    answer = 1;
+                }
+            }
+            else{
+                DrawTexture(ezmodebutton2, 0, 0, WHITE);
+            }
+            if(choice3hover){
+                DrawTexture(ezmodebutton3hover, 0, 0, WHITE);
+                if(gamestarted && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    answer = 2;
+                }
+            }
+            else{
+                DrawTexture(ezmodebutton3, 0, 0, WHITE);
+            }
+
+            if(gamestarted && answer != -1){
+                if(answer == correctans){
+                    DrawTexture(correct, 0, 0, WHITE);
+                }
+                else{
+                    gameover = true;
+                    gamestarted = false;
+                    countdownstart = false;
+                }
+            }
+
+            if(gameover){
+                DrawTexture(boom , 0, 0, WHITE);
+                gamestarted = false;
+                countdownstart = false;
+
+                if(boompa1hover){
+                    DrawTexture(boompahover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        screen = 1;
+                        score = 0;
+                        answer = -1;
+                        gameover = false;
+                        gamestarted = false;
+                        countdownstart = false;
+                    }
+                }
+                else{
+                    DrawTexture(boompa, 0, 0, WHITE);
+                }
+
+            }
+            if(score >= winscore && !gameover){
+                DrawTexture(winscreen, 0, 0, WHITE);
+                gamestarted = false;
+                countdownstart = false;
+
+                if(winplay || winagain){
+                    DrawTexture(winpahover, 0, 0, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                        screen = 1;
+                        score = 0;
+                        answer = -1;
+                        gameover = false;
+                        gamestarted = false;
+                        countdownstart = false;
+                    }
+                }
+                else{
+                    DrawTexture(winpa, 0, 0, WHITE);
+                }
+            }
+
+
             
         }
         EndDrawing();
