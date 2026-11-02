@@ -1,3 +1,12 @@
+Bomb Guesser: a bomb game where you have to match the shapes to pass to the next round.
+guide in game
+download the zip file and extract it.
+what i learned after this:
+learning code isnt that hard, it takes alot of time and patience, im so surprised i got 18
+hours of code in, but i barely got any sleep. im surprised that i learned basically almost the 
+all of raylibs if i say so myself, maybe, i might be overstepping it but i think i did really well
+try custom mode, start time = 1, bomb time = 1 and any score, ITS REALLY FUN!
+
 hour 1: 
 - planned out the game on a notebook
 - drew pixel art for menu, play button, quit button on a software called libresprite.
@@ -75,5 +84,28 @@ hour 12:
   back buttons use back music and a lobby music when the game opens but it stops when real game starts
   and come back when I play again.
 - added explosion to when you lose it plays an explosion,
-- after this I realized how important sound is, it made the game feel more alive.
+- after this I realized how important sound is, it made the game feel more alive.\
+hour 13/14:
+- added a winning sound when you win, timer countdown sound for the firs tinital timer, and a 
+  countdown end sound when countdown is ended.
+- added a bomb timer sound which is like a ticking clock, added a correct sound for when you ge tthe right answer
+- added more sounds to finish up the rest of the game so other parts dont feel more alive than 
+  some parst. added audios like losing screen music, winnign screen music, normal game music, and cusotm game music
+- most of it was debugging and figuring out where to put the code and which statment to put it in
+hour 15-17:
+- first 2 hour:
+  - first 40 minutes i made pixel art for the music on and off button i wanted to add.
+  - made pixel art for statistics button, page, exitbutton, which i made functional after and
+    stats page displays total wins, losses, correct, games, and winrate
+  - 3rd hourmade pixel art for settings button, page, exit, and it was at this point where i   changed my mind and deletedd the music on and off button and made it into the settings      button instead. made a music off and on and the audio off and on buttons, and fixed the code
+    so buttons behind the page cant be clicked.
+hour 18: last hour:
+- ran out of ideas to add to the game so i spent a few mintues thinking, and i thought of animations, but i didnt want to draw it so i researched a few ways which was to use the raylibs library and use camera2d to make things move its offsets and x and y values.
+- i made a explosion screen shake and added a screen shaek effect when the bomb explodes, and used new functions which took a bit.
+- bomb shaking timer, basically teh same as the explosion screen almost, and made values for that.
+-connected the statistics page to custom mode so that you can get your statistics from the custmo game mode too.
+
+
+
+
 
