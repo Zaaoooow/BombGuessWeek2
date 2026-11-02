@@ -1,4 +1,10 @@
-//bomb guess game using raylibs.
+/*
+bomb guess game using raylibs library entirely
+you get three choices and there will be a displayed box with a shape and a color, you have
+to match the displayed shape with one of the choices you have, if you get it wrong, you explode
+, if you get it right you pass on to the next round.
+There is a normal mode and custom mode.
+*/
 #include <raylib.h>
 
 int main(){
@@ -9,43 +15,43 @@ int main(){
     int screen = 0;
     
     //screen0
-    Texture2D bground1 = LoadTexture("assets/bg1.png");
-    Texture2D pButton1 = LoadTexture("assets/PlayButton1.png");
-    Texture2D pButton1Hover = LoadTexture("assets/PlayButton2.png");
-    Texture2D qButton1 = LoadTexture("assets/quitbutton2.png");
-    Texture2D qButton1Hover = LoadTexture("assets/quitbutton1.png");
-    Texture2D guideButton1 = LoadTexture("assets/guide2.png");
-    Texture2D guideButton1Hover = LoadTexture("assets/guide1.png");
-    Texture2D guidePage = LoadTexture("assets/guidepage.png");
-    Texture2D guidePageExit = LoadTexture("assets/guidepageExit.png");
-    Texture2D guidePageExithover = LoadTexture("assets/guidepageExitHover.png");
+    Texture2D bground1 = LoadTexture("assets/screen0/bg1.png");
+    Texture2D pButton1 = LoadTexture("assets/screen0/PlayButton1.png");
+    Texture2D pButton1Hover = LoadTexture("assets/screen0/PlayButton2.png");
+    Texture2D qButton1 = LoadTexture("assets/screen0/quitbutton2.png");
+    Texture2D qButton1Hover = LoadTexture("assets/screen0/quitbutton1.png");
+    Texture2D guideButton1 = LoadTexture("assets/screen0/guide2.png");
+    Texture2D guideButton1Hover = LoadTexture("assets/screen0/guide1.png");
+    Texture2D guidePage = LoadTexture("assets/screen0/guidepage.png");
+    Texture2D guidePageExit = LoadTexture("assets/screen0/guidepageExit.png");
+    Texture2D guidePageExithover = LoadTexture("assets/screen0/guidepageExitHover.png");
     //screen1
-    Texture2D screen2 = LoadTexture("assets/screen2.png");
-    Texture2D normalmode1 = LoadTexture("assets/normal1.png");
-    Texture2D normalmode1hover = LoadTexture("assets/normal1hover.png");
-    Texture2D customMode1 = LoadTexture("assets/custom.png");
-    Texture2D customMode1Hover = LoadTexture("assets/customhover.png");
-    Texture2D backbutton = LoadTexture("assets/backbuttonhover.png");
-    Texture2D backbuttonhover = LoadTexture("assets/backbutton.png");
+    Texture2D screen2 = LoadTexture("assets/screen1/screen2.png");
+    Texture2D normalmode1 = LoadTexture("assets/screen1/normal1.png");
+    Texture2D normalmode1hover = LoadTexture("assets/screen1/normal1hover.png");
+    Texture2D customMode1 = LoadTexture("assets/screen1/custom.png");
+    Texture2D customMode1Hover = LoadTexture("assets/screen1/customhover.png");
+    Texture2D backbutton = LoadTexture("assets/screen1/backbuttonhover.png");
+    Texture2D backbuttonhover = LoadTexture("assets/screen1/backbutton.png");
     //screen2
-    Texture2D normalpage = LoadTexture("assets/background3.png");
-    Texture2D bomb = LoadTexture("assets/bomb.png");
-    Texture2D ezmodebutton1 = LoadTexture("assets/choice1.png");
-    Texture2D ezmodebutton1hover = LoadTexture("assets/choice1hover.png");
-    Texture2D ezmodebutton2 = LoadTexture("assets/choice2.png");
-    Texture2D ezmodebutton2hover = LoadTexture("assets/choice2hover.png");
-    Texture2D ezmodebutton3 = LoadTexture("assets/choice3.png");
-    Texture2D ezmodebutton3hover = LoadTexture("assets/choice3hover.png");
-    Texture2D displaybox = LoadTexture("assets/displaybox.png");
-    Texture2D boom = LoadTexture("assets/boom.png");
-    Texture2D boompa = LoadTexture("assets/boompa.png");
-    Texture2D boompahover = LoadTexture("assets/boompahover.png");
-    Texture2D winscreen = LoadTexture("assets/winscreen.png");
-    Texture2D winpa = LoadTexture("assets/winpa.png");
-    Texture2D winpahover = LoadTexture("assets/winpahover.png");
-    Texture2D correct = LoadTexture("assets/correct.png");
-    Texture2D screen3 = LoadTexture("assets/screen3.png");
-    Texture2D customscreen = LoadTexture("assets/customscreen.png");
+    Texture2D normalpage = LoadTexture("assets/screen2/background3.png");
+    Texture2D bomb = LoadTexture("assets/screen2/bomb.png");
+    Texture2D ezmodebutton1 = LoadTexture("assets/screen2/choice1.png");
+    Texture2D ezmodebutton1hover = LoadTexture("assets/screen2/choice1hover.png");
+    Texture2D ezmodebutton2 = LoadTexture("assets/screen2/choice2.png");
+    Texture2D ezmodebutton2hover = LoadTexture("assets/screen2/choice2hover.png");
+    Texture2D ezmodebutton3 = LoadTexture("assets/screen2/choice3.png");
+    Texture2D ezmodebutton3hover = LoadTexture("assets/screen2/choice3hover.png");
+    Texture2D displaybox = LoadTexture("assets/screen2/displaybox.png");
+    Texture2D boom = LoadTexture("assets/screen2/boom.png");
+    Texture2D boompa = LoadTexture("assets/screen2/boompa.png");
+    Texture2D boompahover = LoadTexture("assets/screen2/boompahover.png");
+    Texture2D winscreen = LoadTexture("assets/screen2/winscreen.png");
+    Texture2D winpa = LoadTexture("assets/screen2/winpa.png");
+    Texture2D winpahover = LoadTexture("assets/screen2/winpahover.png");
+    Texture2D correct = LoadTexture("assets/screen2/correct.png");
+    Texture2D screen3 = LoadTexture("assets/screen2/screen3.png");
+    Texture2D customscreen = LoadTexture("assets/screen2/customscreen.png");
     
     //yellow
     Texture2D c1 = LoadTexture("assets/c1.png");
@@ -159,22 +165,24 @@ int main(){
     SetTextureFilter(statsexit, TEXTURE_FILTER_POINT);
     SetTextureFilter(statsexithover, TEXTURE_FILTER_POINT);
 
-    //sound/audio
-    Sound clicksound = LoadSound("sound/clicksound.wav");
-    Sound minusplus = LoadSound("sound/minusplus.wav");
-    Sound screensound = LoadSound("sound/screen.wav");
-    Sound back = LoadSound("sound/back.wav");
-    Music lobbymusic = LoadMusicStream("sound/lobby.mp3");
-    Sound explosion = LoadSound("sound/explosion.mp3");
-    Sound winning = LoadSound("sound/winning.mp3");
-    Sound correctsound = LoadSound("sound/correct.mp3");
-    Sound bombtick = LoadSound("sound/bombtimer.wav");
-    Sound countend = LoadSound("sound/countdownend.wav");
-    Sound countdowntimer = LoadSound("sound/countdown.wav");
-    Music winmusic = LoadMusicStream("sound/winningscreenmusic.mp3");
-    Music losemusic = LoadMusicStream("sound/losingscreen.mp3");
-    Music screen2music = LoadMusicStream("sound/screen2music.mp3");
-    Music custommusic = LoadMusicStream("sound/customscreen.mp3");
+    //audio
+    //sound effects
+    Sound clicksound = LoadSound("audio/sounds/clicksound.wav");
+    Sound minusplus = LoadSound("audio/sounds/minusplus.wav");
+    Sound screensound = LoadSound("audio/sounds/screen.wav");
+    Sound back = LoadSound("audio/sounds/back.wav");
+    Sound explosion = LoadSound("audio/sounds/explosion.mp3");
+    Sound winning = LoadSound("audio/sounds/winning.mp3");
+    Sound correctsound = LoadSound("audio/sounds/correct.mp3");
+    Sound bombtick = LoadSound("audio/sounds/bombtimer.wav");
+    Sound countend = LoadSound("audio/sounds/countdownend.wav");
+    Sound countdowntimer = LoadSound("audio/sounds/countdown.wav");
+    //music
+    Music winmusic = LoadMusicStream("audio/music/winningscreenmusic.mp3");
+    Music losemusic = LoadMusicStream("audio/music/losingscreen.mp3");
+    Music screen2music = LoadMusicStream("audio/music/screen2music.mp3");
+    Music custommusic = LoadMusicStream("audio/music/customscreen.mp3");
+    Music lobbymusic = LoadMusicStream("audio/music/lobby.mp3");
 
     //settings
     Texture2D settingpage = LoadTexture("assets/settingspage.png");
@@ -210,22 +218,28 @@ int main(){
     int score = 0;
     int answer = -1;
     int x;
+    
     //coutdown
     bool countdownstart = false;
     float startTime;
     int countdown;
+    
     //bomb coutdown
     bool gamestarted = false;
     float bombstartTime;
     int bombcountdown ;
+    
     //screen 3
     int starttimespeed = 1;
     int bombtimespeed = 1;
     int winscore = 1;
+    
     //screen 4
     int customrandom;
+    
     //highscore
     int highscore = 0;
+    
     //sound
     bool correctsoundplayed = false;
     float lastTickTime = 0;
@@ -233,10 +247,12 @@ int main(){
     int audioOffOn = 0;
     bool music = true;
     bool audio = true;
+    
     //streak
     int streak = 0;
     int beststreak = 0;
     bool streakCount = false;
+    
     //stats
     bool statscreen = false;
     int totalgames = 0;
@@ -246,6 +262,19 @@ int main(){
     int totalcorrect = 0;
 
     //screen shake
+    float shaketimer = 0.0f;
+    float shakeduration = 0.3f;
+    float shakeintensity = 7.0f;
+    Vector2 shakeoffset = {0, 0};
+    Camera2D camera = {0};
+    camera.target = {256, 208};
+    camera.offset = {256, 208};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
+    //bomb shake?
+    Vector2 bombshakeoffset = {0, 0};
+    float bombshakeintensity = 2.0f;
 
     SetMusicVolume(lobbymusic, 0.4f);
     bool lobbymusicplaying = true;
@@ -260,6 +289,7 @@ int main(){
 
 
     while(!WindowShouldClose()){
+    
         //stats 
         if(totalgames > 0){
             winpercent = (totalwins * 100) / totalgames;
@@ -273,20 +303,42 @@ int main(){
         UpdateMusicStream(lobbymusic);
         UpdateMusicStream(winmusic);
         UpdateMusicStream(losemusic);
+
         if((screen == 2 || screen == 4) && lobbymusicplaying){
             StopMusicStream(lobbymusic);
             lobbymusicplaying = false;
         }
+
         if((screen != 2 && screen != 4) && !lobbymusicplaying){
             SeekMusicStream(lobbymusic, 0.0f);
             PlayMusicStream(lobbymusic);
             lobbymusicplaying = true;
         }
+    
+        //bomb shake
+        if(gamestarted && bombcountdown > 0){
+            bombshakeoffset.x = GetRandomValue(-bombshakeintensity, bombshakeintensity);
+            bombshakeoffset.y = GetRandomValue(-bombshakeintensity, bombshakeintensity);
+        }
+        else{
+            bombshakeoffset = {0, 0};
+        }
         BeginDrawing();
+
+    
+        //screen shake
+        if(shaketimer > 0.0f){
+            shaketimer -= GetFrameTime();
+            shakeoffset.x = GetRandomValue(-shakeintensity, shakeintensity);
+            shakeoffset.y = GetRandomValue(-shakeintensity, shakeintensity);
+        }
+        else{
+            shaketimer  = 0.0f;
+            shakeoffset = {0, 0};
+        }
         
         Vector2 cursor = GetMousePosition();
 
-        bool settingsOn = false;
 
         // menu screen
         if(screen == 0){
@@ -306,6 +358,7 @@ int main(){
             ClearBackground(RAYWHITE);
             
             DrawTexture(bground1, 0, 0, WHITE);
+
             if(playhover){
                 DrawTexture(pButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
@@ -316,6 +369,7 @@ int main(){
             else{
                 DrawTexture(pButton1Hover, 0, 0, WHITE);
             }
+
             if(quithover){
                 DrawTexture(qButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
@@ -326,6 +380,7 @@ int main(){
             else{
                 DrawTexture(qButton1Hover, 0, 0, WHITE);
             }
+
             if(guidehover){
                 DrawTexture(guideButton1, 0, 0, WHITE);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !setting){
@@ -336,6 +391,7 @@ int main(){
             else{
                 DrawTexture(guideButton1Hover, 0, 0, WHITE);
             }
+
             // audio
             if(music){
                 SetMusicVolume(lobbymusic, 0.4f);
@@ -351,6 +407,7 @@ int main(){
                 SetMusicVolume(winmusic, 0.0f);
                 SetMusicVolume(losemusic, 0.0f);
             }
+
             if(audio){
                 SetSoundVolume(back, 0.4f);
                 SetSoundVolume(bombtick, 0.4f);
@@ -376,6 +433,7 @@ int main(){
                 SetSoundVolume(winning, 0.0f);
                 music = false;
             }
+
             //settings
             if(settingbool){
                 DrawText("Settings", 419, 351, 10, WHITE);
@@ -389,6 +447,7 @@ int main(){
                 DrawText("Settings", 419, 351, 10, WHITE);
                 DrawTexture(settingbutton, 0, 0, WHITE);
             }
+
             //stats
             if(statbool){
                 DrawText("STATS", 42, 48, 10, WHITE);
@@ -402,6 +461,7 @@ int main(){
                 DrawText("STATS", 42, 48, 10, WHITE);
                 DrawTexture(statsbutton, 0, 0, WHITE);
             }
+
             if(statscreen == true && setting == false){
                 DrawTexture(stats, 0, 0, WHITE);
                 DrawText(TextFormat("Total Games: %i", totalgames), 50, 125, 25, WHITE);
@@ -411,6 +471,7 @@ int main(){
                 DrawText(TextFormat("Winrate: %i%%", winpercent), 300, 125, 25, WHITE);
                 DrawText(TextFormat("Streak: %i", streak), 300, 175, 25, WHITE);
                 DrawText(TextFormat("/Highest: %i", beststreak), 300, 200, 25, WHITE);
+
                 if(statback){
                     DrawTexture(statsexithover, 0, 0, WHITE);
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
@@ -422,6 +483,7 @@ int main(){
                     DrawTexture(statsexit, 0, 0, WHITE);
                 }
             }
+
             //settings
             if(setting && !statscreen){
                 DrawTexture(settingpage, 0, 0, WHITE);
@@ -429,6 +491,7 @@ int main(){
                     DrawTexture(musicOn, 0, 0, WHITE);
                     if(musicset){
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            PlaySound(clicksound);
                             music = false;
                         }
                     }
@@ -437,6 +500,7 @@ int main(){
                     DrawTexture(musicOff, 0, 0, WHITE);
                     if(musicset){
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            PlaySound(clicksound);
                             music = true;
                         }
                     }
@@ -444,10 +508,12 @@ int main(){
                 else{
                     DrawTexture(musicOn, 0, 0, WHITE);
                 }
+
                 if(audio){
                     DrawTexture(audioOn, 0, 0, WHITE);
                     if(audioset){
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            PlaySound(clicksound);
                             audio = false;
                         }
                     }
@@ -456,6 +522,7 @@ int main(){
                     DrawTexture(audioOff, 0, 0, WHITE);
                     if(audioset){
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                            PlaySound(clicksound);
                             audio = true;
                         }
                     }
@@ -581,9 +648,13 @@ int main(){
 
             ClearBackground(RAYWHITE);
 
+            //screenshake
+            camera.target = {256 - shakeoffset.x, 208 - shakeoffset.y};
+            BeginMode2D(camera);
+
             DrawTexture(normalpage, 0, 0, WHITE);
 
-            DrawTexture(bomb, 0, 0, WHITE);
+            DrawTexture(bomb, 0 + bombshakeoffset.x, 0 + bombshakeoffset.y, WHITE);
             DrawTexture(displaybox, 0, 0, WHITE);
 
             //countdown
@@ -621,6 +692,7 @@ int main(){
                         totallosses++;
                         PlayMusicStream(losemusic);
                         PlaySound(explosion);
+                        shaketimer = shakeduration;
                         StopMusicStream(screen2music);
                         gameover = true;
                         gamestarted = false;
@@ -755,6 +827,7 @@ int main(){
                     totallosses++;
                     PlayMusicStream(losemusic);
                     PlaySound(explosion);
+                    shaketimer = shakeduration;
                     StopMusicStream(screen2music);
                     gameover = true;
                     gamestarted = false;
@@ -836,6 +909,7 @@ int main(){
                 }
 
             }
+            EndMode2D();    
         }
         else if(screen == 3){
             //start of screen 3 code
@@ -987,9 +1061,14 @@ int main(){
 
             //start of screen 4 code
             ClearBackground(RAYWHITE);
+
+            //screen shake code
+            camera.target = {256 - shakeoffset.x, 208 - shakeoffset.y};
+            BeginMode2D(camera);
+
             DrawTexture(screen3, 0, 0, WHITE);
 
-            DrawTexture(bomb, 0, 0, WHITE);
+            DrawTexture(bomb, 0 + bombshakeoffset.x, 0 + bombshakeoffset.y, WHITE);
             DrawTexture(displaybox, 0, 0, WHITE);
 
             //custom countdown
@@ -1036,6 +1115,10 @@ int main(){
                     if(answer != correctans){
                         StopMusicStream(custommusic);
                         PlaySound(explosion);
+                        streak = 0;
+                        totallosses++;
+                        totalgames++;
+                        shaketimer = shakeduration;
                         PlayMusicStream(losemusic);
                         gameover = true;
                         countdownstart = false;
@@ -1045,6 +1128,12 @@ int main(){
                     }
                     if(score >= winscore){
                         PlaySound(winning);
+                        totalgames++;
+                        totalwins++;
+                        streak++;
+                        if(streak >= beststreak){
+                            beststreak = streak;
+                        }
                         StopMusicStream(custommusic);
                         PlayMusicStream(winmusic);
                         StopMusicStream(screen2music);
@@ -1144,6 +1233,10 @@ int main(){
                 else{
                     PlayMusicStream(losemusic);
                     PlaySound(explosion);
+                    streak = 0;
+                    totallosses++;
+                    totalgames++;
+                    shaketimer = shakeduration;
                     StopMusicStream(custommusic);
                     StopMusicStream(screen2music);
                     gameover = true;
@@ -1204,6 +1297,7 @@ int main(){
 
             
         }
+        EndMode2D();
         EndDrawing();
     }
     UnloadMusicStream(custommusic);
